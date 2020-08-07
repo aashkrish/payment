@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Transaction status</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <h1 style="color: green; text-align: center;"> Transaction Status </h1>
+    </head>
+    <body style="background-color: #99ff66; align-content: center; padding: 10%">
+        <div>
+            <form name="dirpay" class="needs-validation" novalidate>
+            <div class="form-row">
+            <div class="col-md-6 mb-3">
+                Customer ID:
+                <input type="text" class="form-control" id="custid" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-3">
+                Transaction Reference Number:
+                <input type="number" class="form-control" id="transid" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+        </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit form</button>
+    </form>
+    <script>
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+</script>
+    </body>
+</html>
