@@ -12,14 +12,14 @@
     <body>
         <h1>Hello World!</h1>
         <%
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/accv", "root", "aasha");
-            
-            String query="select bal from acc where accno=?";
-            PreparedStatement st = con.prepareStatement(query);
+            Class.forName("com.mysql.jdbc.Driver"); 
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/new_schema", "root", "aasha");
+            String user=request.getParameter("sacc"); 
             String tacc=request.getParameter("tacc");
+            PreparedStatement st = con.prepareStatement("select bal from accdet where accno=?");
             st.setString(1,tacc);
             ResultSet rs=st.executeQuery();
-            long pm2=0;
+            double pm2=0;
             int f=0;
             double x=0;
             String ex= request.getParameter("curr");
@@ -35,44 +35,45 @@
                         x=0.0051;
             if(rs.next())
             {
-                pm2=Long.parseLong(rs.getString("bal"));
+                pm2=(rs.getDouble("bal"));
                 f=1;    
-            }
+            }  
             if(f==0)
             {
-                response.sendRedirect("failed.jsp");
+                response.sendRedirect("fail.html");
             }
             if(f==1)
             {
-                String user=(String)session.getAttribute("sacc");
+                
                 st.setString(1,user);
                 rs=st.executeQuery();
                 rs.next();
-                long am=Long.parseLong(rs.getString("bal"));
+                long am=rs.getInt("bal");
                 String m= request.getParameter("amt");
                 long m1=Long.parseLong(m);
                 if(am>=m1 && !user.equals(tacc))
                 {
-                    String query3="update acc set bal='"+(pm2+m1*x+"")+"'where accno='"+tacc+"'";
-                    java.sql.Statement st3 = con.createStatement();
-                    String query2="update acc set bal='"+(am-m1+"")+"'where accno='"+user+"'";
-                    java.sql.Statement st2 = con.createStatement(); 
-                    int c2=st2.executeUpdate(query2);
-                    int c3=st3.executeUpdate(query3);
+                    PreparedStatement st1 = con.prepareStatement("update accdet set bal=? where accno=?");
+                    st1.setDouble(1, (pm2+m1*x));
+                    st1.setString(2, tacc);
+                    int c2=st1.executeUpdate();
+                    st1.setDouble(1, (am-m1));
+                    st1.setString(2, user);
+                    int c3=st1.executeUpdate();
                     if((c2>0)   && (c3>0))
                     {
-                        response.sendRedirect("successful.jsp");
+                        response.sendRedirect("succ.html");
                     }
                     else
                     {
-                    response.sendRedirect("failed.jsp");
+                    response.sendRedirect("fail.html");
                     }
                 }
                 else
                 {
-                    response.sendRedirect("failed.jsp");
+                    response.sendRedirect("fail.html");
                 }
             }
-            %>
+        %>
     </body>
 </html>
